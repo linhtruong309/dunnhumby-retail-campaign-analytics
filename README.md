@@ -21,7 +21,9 @@ This project analyzes retail transactions from the Dunnhumby "The Complete Journ
   * **Total Coupon Discount:** $42.61K
 * **Key Findings:** `GROCERY` is the dominant revenue generator, followed by `DRUG GM`. Weekly sales show consistent baseline stability around $80K–$100K following initial growth.
 
-![Executive Overview](path_to_overview.jpg)
+
+<img width="1186" height="662" alt="0FC58868-0929-4E3C-92CA-E2BD4A16E9D6_1_105_c" src="https://github.com/user-attachments/assets/7032b32e-bf9f-47ad-98ab-e08a430f38f3" />
+
 
 ---
 
@@ -33,7 +35,9 @@ This project analyzes retail transactions from the Dunnhumby "The Complete Journ
   * **Total Redeeming Households:** 889
 * **Key Findings:** **Type A** campaigns achieved the highest average redemption rate (~14%), outperforming **Type C** and **Type B**.
 
-![Campaign Performance](path_to_campaign.jpg)
+
+<img width="1273" height="720" alt="EE950B56-DA2D-401E-A78C-D13A477460A6_1_201_a" src="https://github.com/user-attachments/assets/15a51bb4-4b8b-43d1-9d3a-b50a9e93e37d" />
+
 
 ---
 
