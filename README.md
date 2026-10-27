@@ -7,7 +7,7 @@ This project analyzes retail transactions from the Dunnhumby "The Complete Journ
 
 ## 🏗️ System Architecture & Data Pipeline
 - **Database Layer:** MySQL relational database (`promo_db`) managing Fact and Dimension tables.
-- **Data Reconciliation & SQL Views:** Created optimized views (`vw_campaign_summary`, `vw_data_quality`) to perform data integrity checks and summarize campaign metrics.
+- **Data Reconciliation & SQL View:** Created an optimized view (`vw_campaign_summary`) that summarizes campaign metrics (targeted households, redeeming households, redemptions, redemption rate, coupon discount) and was used to validate the Power BI aggregates.
 - **Visualization:** 2-part interactive Power BI dashboard built with clear layout design and responsive slicers.
 
 ---
@@ -43,4 +43,30 @@ This project analyzes retail transactions from the Dunnhumby "The Complete Journ
 
 ## 🛠️ Core DAX & Data Validation
 - **Redemption Rate:** `DIVIDE([Redeeming HH], [Targeted HH], 0)`
-- **Data Integrity:** All aggregates in Power BI (e.g., Total Redemptions: 2,318) match 100% with MySQL `vw_campaign_summary` outputs.
+- **Data Integrity:** Aggregates in Power BI match the MySQL `vw_campaign_summary` output exactly: 2,318 total redemptions, 7,208 targeted households, and 889 redeeming households.
+
+---
+
+## 📁 Repository Structure
+```
+dunnhumby-retail-campaign-analytics/
+├── README.md                  # Project overview, findings, and setup
+├── 01_schema.sql              # Table definitions for promo_db (structure only, no data)
+└── 02_analysis_queries.sql    # vw_campaign_summary view (campaign-level metrics)
+```
+
+---
+
+## 🔁 How to Reproduce
+1. **Get the data:** download the Dunnhumby "The Complete Journey" dataset (not included in this repo because of its size).
+2. **Create the database:** run `01_schema.sql` in MySQL Workbench to create `promo_db` and its tables.
+3. **Load the data:** import the dataset CSV files into the matching tables (`campaign_desc`, `campaign_table`, `coupon_redempt`, `hh_demographic`, `product`, `transaction_data`), for example with the Table Data Import Wizard.
+4. **Build the view:** run `02_analysis_queries.sql` to create `vw_campaign_summary`.
+5. **Check the output:** `SELECT * FROM vw_campaign_summary;` returns one row per campaign. Summed across all campaigns, it gives 7,208 targeted households, 889 redeeming households, and 2,318 redemptions.
+
+---
+
+## 📝 Methodology Notes
+- **Avoiding double counting:** `vw_campaign_summary` aggregates each metric in its own subquery before joining. Joining `coupon_redempt` directly to `transaction_data` (many rows per household per day) would duplicate redemption rows and inflate counts and discounts.
+- **Coupon discount in the view is an approximation:** `total_coupon_discount` sums the coupon discounts a household received on the days it redeemed a campaign coupon, so it may include discounts from other coupons used on the same day.
+- **Two different discount figures:** the $42.61K on the Executive Overview page is the total coupon discount across all transactions. The campaign view only counts redemption days, so the two numbers measure different things and should not be compared directly.
